@@ -51,7 +51,8 @@ Edit this template to fill in your own content.
 
 # Introduction
 
-Type a brief introduction here.
+This page serves as a summary of the concepts we learned about in R Studio. 
+The following sections will get into on the many functions that are useful for scientific analysis when working with environmental data. 
 
 
 # Functions 1: Data Structure Functions {.tabset .tabset-pills}

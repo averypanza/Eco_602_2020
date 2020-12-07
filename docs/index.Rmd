@@ -19,7 +19,7 @@ knitr::opts_chunk$set(message = FALSE)
 options(knitr.duplicate.label = TRUE)
 ```
 
-Everything above this line is the header.
+
 
 
 <!-- The following text won't be displayed in your document.  It tells R how to make nicer looking buttons for your tabbed content. -->
@@ -40,33 +40,13 @@ Everything above this line is the header.
 </style>
 
 
-Use this document as a template to build your final project.
 
-If you've already created the file index.Rmd in your docs folder, you can paste everything below the header into that document.
+# Introduction 
 
-If you don't yet have an index.Rmd file, save this document as index.Rmd in the docs folder of your main class folder.
-
-Edit this template to fill in your own content.
-
-
-# Introduction
-
-This page serves as a summary of the concepts we learned about in R Studio. 
-The following sections will get into on the many functions that are useful for scientific analysis when working with environmental data. 
+This is my Final Project for ECO 602 2020, Part 1 is a compendium of r functions while part 2 is specific to the delomys data. Enjoy.
 
 
 # Functions 1: Data Structure Functions {.tabset .tabset-pills}
-
-Look at the source code for the final project template, you'll notice the text:
-
-{.tabset .tabset-pills}
-
-This creates tabbed content for all the following sections that are one-level below.
-
-- If you include them on a primary header (one #), all of the subsequent secondary headers will in tabs.
-
-
-
 
 ## `c()`
 

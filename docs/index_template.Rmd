@@ -86,7 +86,7 @@ print(char_vec)
 
 ## `data.frame()`
 
-Type your data frame example here.
+type your data.frame example here. 
 
 ## `matrix()`
 

@@ -1,0 +1,517 @@
+---
+title: "ECo 602 - Analysis of Environmental Data"
+subtitle: "Final Project Template"
+author: "Sunny Milosevic"
+date: "Fall 2020"
+output:
+  html_document:
+    theme: readable
+    toc: TRUE
+    toc_float: TRUE
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+options(knitr.duplicate.label = TRUE)
+```
+
+<!-- The following text won't be displayed in your document.  It tells R how to make nicer looking buttons for your tabbed content. -->
+
+<style type="text/css" rel="stylesheet">
+
+.btn {
+    border-width: 0 0 0 0;
+    font-weight: normal;
+    text-transform: none;
+}
+
+.btn-default {
+    color: #2ecc71;
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+</style>
+
+# Introduction
+
+This page serves as a summary of the main concepts learned about coding scripts and graphing data in R Studio. 
+The following sections will elaborate on the multitude of functions that are useful for data analysis. 
+
+# Functions 1: Data Structure Functions {.tabset .tabset-pills}
+
+## `c()`
+
+The *`c()`* function combines or concentrates its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements). All of the elements must be of the same type.Character and numeric types cannot be called in the same call to `c()`
+
+- A couple examples of creating vectors are shown below:
+
+```{r}
+num_vec  = c(1, 4, 8, 9, 13) # Create a vector of numbers.
+
+char_vec = c("a", "fish", "data is cool") # Create a vector of characters.
+```
+
+- Vector contents can be shown by typing the name of the vector, or using the `print()` function.
+
+```{r}
+
+num_vec # Typing the name of the vector into the console prints the contents.
+
+print(char_vec) # The print() function accomplishes the same task.
+```
+
+
+## `data.frame()`
+
+The *data.frame()* function creates data frames, a matrix of vector summaries for data variables or categories. A data frame contains columns from each vector. Columns may be of differing types, such as numeric, logical, factor or character, and all columns should be named. Vectors must have an equal number of observations (or data entries) in order for a data frame to work. Rows will follow a numerical order unless they are specifically named as well. 
+
+- To build a data frame from scratch, follow the R script in the example below: 
+
+```{r data_frame_example_1}
+dat_1 = data.frame(
+  letters = c("b","w","b", "a", "f", "k"),
+  numbers_1 = c(34, 6, 123454, 7, 421, 36),
+  numbers_2 = c(2, 55, 612, 756, 4, 88),
+  names_1 = c("Alex", "Sara", "Kevin", "Bob", "Katie", "Nathan"),
+  names_2 = c("John", "Britney", "Stacy", "Greg", "Heather", "Luke"),
+  logical_1 = c(TRUE, FALSE, FALSE, TRUE, TRUE, FALSE))
+```
+- Data frames can be printed by using the following two commands:
+
+```{r data_frame_example_2}
+dat_1 # Print contents by typing the name of the data frame. 
+print(dat_1) # Print contents by using the print function.
+```
+
+- A subset column can be called by using the name of the column and the '$' symbol:
+```{r data_frame_example_3}
+dat_1$letters # Subset a column by name
+```
+
+- Some additional functions related to data frames are the following:
+```{r data_frame_example_4}
+str(dat_1) # Structure of the data frame.
+nrow(dat_1) # Number of Rows (observations).
+ncol(dat_1) # Number of Columns (variables).
+head(dat_1, n=2) # First 2 rows of data frame, which is useful for very long data frames.
+tail(dat_1, n=3) # Last 3 rows of data frame, which is useful for very long data frames.
+names(dat_1) # Header names (aka variable names).
+```
+
+
+## `matrix()`
+
+The *'matrix()'* function creates a matrix, or a two-dimensional table of vectors. 
+
+- To build a data frame from scratch, follow the R script in the example below: 
+
+```{r matrix_example_1}
+Matrix_1 = matrix(
+  c(5, 43, 26, 467, 49, 2, 57483, 3, 867, 24, 478, 721), #Vector of sample set of numerical values.
+  nrow = 4, #Designated number of rows in this matrix.
+  ncol = 3, #Designated number of columns in this matrix.
+  byrow = TRUE) #If FALSE (which is the default) the matrix is filled by columns; if TRUE the matrix is filled by rows.
+print(Matrix_1) #Prints the matrix into a table
+```
+
+- Specific information can be called from the matrix by specifying the row and column: 
+
+```{r matrix_example_2}
+Matrix_1[2, 3]  # This function calls for the data value in the 2nd row and the 3rd column.
+```
+
+- Likewise, whole rows of columns can be called from a matrix: 
+   
+```{r matrix_example_3}
+Matrix_1[2, ]# This function calls for all values in the 2nd row.
+Matrix_1[ ,3]# This function calls for all values in the 3rd column. 
+```
+
+- Multiple columns or rows can be called at a time:
+
+```{r matrix_example_4}
+Matrix_1[ ,c(1,3)]  # This function calls for all values in the 1st and 3rd columns. 
+```
+
+- Columns or rows can be assigned names, per below: 
+```{r matrix_example_5}
+dimnames(Matrix_1) = list(
+  c("Row 1", "Row 2", "Row 3", "Row 4"),  # Row names.
+  c("Col 1", "Col 2", "Col 3")  # Column names.
+)
+Matrix_1 # Prints the whole matrix.
+```
+
+
+## `length()`
+
+The *'length()'* function is used to determine the quantity of data set values. 
+
+- Using a new matrix, length function is used to quickly summarize the number of its values: 
+
+```{r matrix_example 2}
+(Matrix_2 <- matrix( 
+  c(1:2000), # Vector of 2000 numerical values.
+  nrow = 20, # 20 Rows
+  ncol = 100)) # 100 Columns
+
+length(Matrix_2) #length function 
+```
+
+
+## `nrow()`
+
+The *'nrow()'* function calls for the number of rows in a data frame or a matrix.
+
+- The following example will call for the number of rows of the two matrices and the single data frame created in previous examples of this function section:
+
+```{r nrow_example_1}
+nrow(dat_1)
+nrow(Matrix_1) 
+nrow(Matrix_2)
+```
+
+
+## `ncol()`
+
+Similar to the *nrow()'* function, the *ncol()* function calls for the number of columns in a data frame or a matrix. 
+
+- Again, the following example will call for the number of columns in the two matrices and the single data frame created in previous examples of this function section.
+
+```{r ncol_example_1}
+ncol(dat_1)
+ncol(Matrix_1) 
+ncol(Matrix_2)
+```
+
+
+## `dim()`
+
+The *dim()* function is used to set or retrieve the dimension of the specified matrix or data frame. When using to retrieve the dimension, output numbers indicate number of rows followed by number of columns. This function cannot retrieve the dimension of a single vector. 
+
+- Examples of how to retrieve dimension of a matrix or a data frame, using previously created matrix and data frame, are below:
+
+```{r dim_example_1}
+dim(Matrix_1)  # Retrieve the dimension of this specified matrix.
+dim(dat_1) # Retrieve the dimension of this specified data frame.
+```
+
+- Another way to use the dim function is to set the size of a matrix or data frame. The following example will create a vector of a given dimension, and use the dim function to set the data values into a specified table. 
+
+```{r dim_example_2}
+Dim_1 <- c(1:100) # Create a vector of numbers.
+Dim_1 # Print the created vector.
+
+dim(Dim_1) <- c(10, 10) # Use dim function to break the vector into a data frame, or a matrix of 10 rows by 10 columns
+Dim_1 # Print the restructured vector, which is now a data frame.
+
+str(Dim_1) # Structure of the data frame, which are two un-named vectors of integer values 1 through 10. 
+```
+
+
+# Functions 2: Numerical Data Exploration  {.tabset .tabset-pills}
+
+## `summary()`
+
+The *summary()* function is used to produce result summaries of various model fitting functions. It provides descriptive statistics on a data set, such as minimum, the first quantile, the median, the mean, the 3rd quantile, and the maximum value of our input data.
+
+- The following shows how the summary function can be applied to a vector:
+```{r summary_example_1}
+vector_1 <- c(1:500) # Create a vector of numbers.
+summary(vector_1) # Print the summary of the specified vector.
+```
+
+- The next example shows how the summary function can be applied to a data frame.
+```{r summary_example_2}
+dat_2 <- data.frame( # Create example data frame.
+  A = 1:10, # Named 1st column A to be a vector of integers 1 through 10
+  B = letters[1:10], # Named 2nd column B to be a vector of letters, from the 1st letter to the 10th letter in the alphabet
+  C = 4, # Named 3rd column C, to always be a value of 4
+  D = c(TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)) # Named 4th column D to be a logical vector of 10 true or false values
+
+dat_2 # Print example data frame.
+
+summary(dat_2) # Print summary of the specified data frame.
+```
+
+- The summary function can also be used to review linear regression models, as shown in the following example. We will use the *palmerpenguins* data set for exploration. 
+```{r summary_example_3}
+require(palmerpenguins) # Load the Penguin data set.
+penguin_dat = droplevels(subset(penguins, species != "Gentoo")) # Create a data frame for a specific Penguin species.
+summary(penguin_dat) # Print summary of the data frame
+summary(lm(body_mass_g ~ bill_length_mm, data=penguin_dat))# Print summary of the linear regression model of the selected data set's variables: body mass and bill lenght
+
+```
+
+
+## `mean()`
+The *mean()* function calculates the arithmetic mean of a numeric input vector.
+
+- Basic application can be applied to vectors, as shown below:
+```{r mean_example_1}
+vector_2 <- c(1:100) # Create a vector of numbers.
+mean(vector_2) # Apply mean function
+```
+
+- The next example shows how to derive a mean value in a vector that has some null "NA" values, as letters cannot be computated arithmetically. 
+```{r mean_example_2}
+vector_3 <- c(1, 5, 8, 3, NA, 0, 9, 78, 10, -2, -16) # Create a vector of numbers with an NA value.
+mean(vector_3) # Apply mean function - result is an error or "NA"
+mean(vector_3, na.rm = TRUE) # Inform R to remove the NA value before computing the mean. Result is a desired numerical value.
+```
+
+- The following examples applies the mean function to a real set of data. We will use the *palmerpenguins* data set for exploration.
+```{r mean_example_3}
+
+head(penguin_dat) # Print head rows of the specified data set.
+mean(penguins$bill_length_mm) # Mean of the bill length column. Result is 'NA' due to some NA values. 
+mean(penguins$bill_length_mm, na.rm = TRUE) # Inform R to remove NA values before computing the mean. Result is a desired numerical value. 
+```
+
+
+## `sd()`
+The *sd()* function calculates the standard deviation of a numeric input vector. Mathematically, it is the square root of data variance. 
+
+- An example of calculating the standard deviation for a vector is below. We will use one of the previously created vectors:
+
+```{r sd_example_1}
+vector_2 #Print specified vector for preview.
+sd(vector_2) # Applying the standard deviation calculation to specified vector.
+```
+
+- Another example shown is how to calculate the standard deviation for a vector with NA or NULL values. Again, we will use one of the previously created vectors which has an NA value among its values:
+
+```{r sd_example_2}
+vector_3 #Print specified vector for preview.
+sd(vector_3) # Applying the standard deviation calculation to specified vector. Result is 'NA' due to some NA values. 
+sd(vector_3, na.rm = TRUE) # Similar to other computational function, na.rm is used to inform R to remove the NA value before computing the mean. Result is a desired numerical value.
+```
+
+- Next example shows how to calculate the standard deviation for a real data set. We will use the *palmerpenguins* data set for exploration.
+
+```{r sd_example_3}
+
+head(penguin_dat) # Print head rows of the specified data set.
+sd(penguin_dat$bill_length_mm) # Apply the standard deviation to a specified data variable using the $ symbol. Once again, there was an NA value in this variable. 
+sd(penguin_dat$bill_length_mm, na.rm = TRUE) # Inform R not to calculate NA values. Result is a numerical value. 
+```
+
+
+# Functions 3: Graphical Data Exploration {.tabset .tabset-pills}
+
+One of the main reasons for using R is for its graphic capabilities of data. 
+Several types of graphing styles will be shown here, including scatterplots, histograms, and boxplots. 
+
+## 'plot()'
+
+The *'plot()'* function is used to create scatter plot diagrams of data. 
+
+- The first example will show how to create a very quick scatterplot, using the *palmerpenguins* data set.
+
+```{r scatterplot_1, fig.asp=0.7, fig.height=20}
+require(palmerpenguins) # Load the penguins package
+plot(bill_length_mm ~ body_mass_g, # # First variable specifies the x direction, Second variable specifies the y direction of the graph
+     data = penguins)# Specify data set
+```
+
+- The following example will show how to create a more developed scatterplot, using the same *palmerpenguins* data set. Additionally, this example will adjust the x and y limits of the graph. 
+
+```{r scatterplot_2, fig.asp=0.7, fig.height=20}
+plot(
+  bill_length_mm ~ body_mass_g, # First variable specifies the x direction, Second variable specifies the y direction of the graph
+  data = penguins, # Specify data set
+  main = "Penguin Data Example 1 Scatterplot", #Specify the title of the graph
+  xlab = "Body Mass", # Specify name of the x coordinate
+  ylab = "Bill Length", # Specify name of the y coordinate,
+  col = "purple", # Specify color, otherwise black
+  pch = 16, #pch numbers represent different graphical symbols
+  xlim = c(2500,6500), # Adjusts the x coordinate limit
+  ylim = c(20,70)) # # Adjusts the y coordinate limit
+```
+
+- This second example also creates a scatterplot, where the x and y coordinates are individually specified as vectors ahead of being called in the plot function. This method is a little bit more involved. We will use the same *palmerpenguins* data set. This example will change the color, type of symbol and its size. 
+
+```{r scatterplot_3, fig.asp=0.7, fig.height=20}
+
+x <- c(penguins$bill_length_mm) # Create a vector for x coordinate
+y <- c(penguins$body_mass_g) # Create a vector for y coordinate
+
+plot(
+  x, y, # Informs R to plot x vector against the y vector, as specified
+  data = penguins, 
+  main = "Penguin Data Example 2 Scatterplot", 
+  xlab = "Body Mass", 
+  ylab = "Bill Length", 
+  col = "red",
+  pch = 12, #pch numbers represent different graphical symbols
+  cex = .4, # cex specifies the size of symbol
+  frame = TRUE) # Removes the boxed frame
+```
+
+## 'hist()'
+
+The *'hist()'* function is used to create histogram diagrams of data. Histograms are a good choice of graphing style when general distribution of a variable is analyzed. 
+
+- The first example will show how to create a very quick, single step histogram, using the *palmerpenguins* data set:
+
+```{r histogram_1, fig.asp=0.7, fig.height=20}
+hist(penguins$body_mass_g) # Specify data set and one variable which to graph. Histograms indicate specified variable in the x coordinate and frequency (or count) as default in the y coordinate. If frequency is set to FALSE, the y coordinate graphs density. 
+```
+
+- The second example illustrates a more developed histogram of the same data:
+
+```{r histogram_2}
+hist(penguins$body_mass_g, 
+     breaks = 50, # Designates the number of breaks between bars along the x axis. This may provide a more detailed variation for the numerical trend of the graph.
+     main = "Penguin Body Mass Histogram", #Specify the title of the graph
+     xlab = "Body Mass (g)",# Specify name of the x coordinate
+     ylab = "Count", # Specify name of the y coordinate
+     col = "yellow", # Specify color
+     xlim = c(2000,7000), # Adjusts the x coordinate limit
+     ylim = c(0, 30)) # Adjusts the y coordinate limit
+```
+
+- Additionally, histograms can be used to develop density plots, which are curve representations of the variations in data.
+
+```{r histogram_3}
+plot(density
+     (penguins$body_mass_g, # Specify data set and one variable which to graph.
+       na.rm = TRUE), #Inform R to remove the NA value before computing the mean for the curve.
+     main = "Penguin Mass Density Plot", #Specify the title of the graph
+     col = "blue", #Specify the color
+     frame = FALSE) #Specify no box frame
+```
+
+
+## 'boxplot()'
+
+The *'box()'* function is used to create box plot diagrams of data. This type of graphical mapping shows the shape of data distribution, its central value indicated by the black bar, and also its variability indicated by the lowermost and uppermost boundaries of the box. Additionally, boxplots can compare several sets of data in a single representation of data, which is why they are very useful. 
+
+- The first example of the box plot will illustrate a very simple, single variable analysis. Using the *palmerpenguins* data set, we will graph penguin body mass conditioned on a single variables: species. 
+
+```{r boxplot_example_1}
+summary(penguins) # Print summary of specified data set to see which variables may be of interest to graphically analyze.
+boxplot(body_mass_g~species, # Specify two variables.
+        data = penguins) # Specify data set.
+```
+
+- The second example is of a *conditional* box plot, which illustrates several variables for analysis. Using the *palmerpenguins* data set, we will graph penguin body mass conditioned on two variables: species and sex. 
+
+```{r boxplot_example_2}
+boxplot(body_mass_g ~ sex * species, # Specify three variables.
+        data = penguins) # Specify data set.
+```
+
+- Some additional scripts that can be used with box plots to enhance the representation of data:
+
+```{r boxplot_example_3}
+boxplot(body_mass_g ~ sex * species, # Specify three variables.
+        data = penguins, # Specify data set.
+        main = "Penguin Body Mass Conditional Box Plot", # Specify title.
+        xlab = "Species and Sex", # Specify conditional variables.
+        frame = FALSE, # Specify no box frame of graph, otherwise TRUE as default
+        notch = TRUE, # Specify notch, otherwise FALSE as default; helps strongly visualize the mean
+        col = (c("red", "orange"))) # Specify colors.
+
+```
+
+## 'par()' 
+
+The *'par()' function tiles several graphs into a single graphical representation. 
+
+- Including the mfrow=c(nrows, ncols) to create a matrix of nrows (number of rows) by ncols (number of columns) plots that are filled in by row. Otherwise, including mfcol=c(nrows, ncols) fills in the matrix by columns. 
+
+
+
+
+# Functions 4: Distribution Functions {.tabset .tabset-pills}
+
+
+## 'dnorm()'
+
+
+## 'pnorm()'
+
+
+## 'dnorm()'
+
+
+## 'qnorm()'
+
+
+## 'dbinom()'
+
+
+## 'pbinom()'
+
+
+## 'qbinom()'
+
+
+# Functions 5: Other Functions {.tabset .tabset-pills}
+
+## 'subset()'
+
+## 'libary() and require()'
+
+## 'read.csv()'
+The read function can be used to tell R where to locate the data file for analysis. 
+
+<!--#install.packages("here") 
+
+#insert comments to describe these scripts
+require("here")
+here()
+getwd()
+here()
+
+#two ways to get to a file:
+#relative path
+read.csv("data/hab.sta.csv")
+#absolute path(more difficult)
+read.csv("C:/Users/Suncica/Dropbox/My PC (LAPTOP-67TRTL5F)/Documents/GitHub/Eco_602_2020/data/hab.sta.csv")
+
+#here helps locate file when directory is set someplace else, will work to open any data file as long as it is in the data directory:
+here("data", "hab.sta.csv")
+file.exists(here("data", "hab.sta.csv"))
+
+read.csv(here("data", "hab.sta.csv"))
+dat_habitat<- read.csv(here("data", "hab.sta.csv"))
+
+dat_habitat
+#structure of data frame
+str(dat_habitat) 
+#class 
+class(dat_habitat)-->
+
+
+# Part 2: Data Anaylsis
+
+You’ll perform a complete data analysis on the Delomys species data.
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

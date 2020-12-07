@@ -43,7 +43,7 @@ options(knitr.duplicate.label = TRUE)
 
 # Introduction 
 
-This is my Final Project for ECO 602 2020, Part 1 is a compendium of r functions while part 2 is specific to the delomys data. Enjoy.
+This is my Final Project for ECO 602 2020, Part 1 is a compendium of r functions while part 2 is specific to the delomys data. Enjoy!
 
 
 # Functions 1: Data Structure Functions {.tabset .tabset-pills}
